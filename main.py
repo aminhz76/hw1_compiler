@@ -37,6 +37,40 @@ if __name__ == "__main__":
             state = 1
             left = i
             right = i
+        if (input[i] == '+') or (input[i] == '-') or (input[i] == '*') or (input[i] == '/'):
+            state = 2
+            if input[i] == '+':
+                state = -1
+                t = Token('add','+')
+                arr.append(t)
+            elif input[i] == '-':
+                state = -1
+                t = Token('minus','-')
+                arr.append(t)
+            elif input[i] == '*':
+                state = -1
+                t = Token('mul','*')
+                arr.append(t)
+            elif input[i] == '/':
+                state = -1
+                t = Token('div','/')
+                arr.append(t)
+        if input[i] == '=':
+            state = -1
+            t = Token('assign', '=')
+            arr.append(t)
+        if (input[i] == '(') or (input[i] == ')') :
+            state = -1
+            if input[i] == '(':
+                t = Token('openParan', '(')
+                arr.append(t)
+            elif input[i] == ')':
+                t = Token('closeParan', ')')
+                arr.append(t)
+        if(input[i] == '\n'):
+            state = -1
+            t = Token('nextLine', '\n')
+            arr.append(t)
         while state == 0:
             temp = temp + input[right]
             # print("temp :" + temp)
@@ -76,11 +110,7 @@ if __name__ == "__main__":
                     t = Token('numberDouble', temp)
                     arr.append(t)
                     break
-            # print(input[right])
-            # print(input[right].isdigit())
-            # print(doubleFlag)
             if (input[right].isdigit() == False):
-                # print(doubleFlag)
                 if (input[right] == '.'):
                     if (doubleFlag == False) :
                         doubleFlag = True
@@ -88,7 +118,11 @@ if __name__ == "__main__":
                         print("Error on : "+temp)
                         i = len(input)
                         break
-                elif(doubleFlag == True):
+                elif input[right] != ' ':
+                    print("Error on : " + temp+input[right])
+                    i = len(input)
+                    break
+                elif(doubleFlag == True ):
                     state = -1
                     i = right - 1
                     t = Token('numberDouble', temp)
